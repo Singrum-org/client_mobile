@@ -1,11 +1,13 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {Text} from 'react-native';
+import ProfileCard from '../components/profileScreen/ProfileCard';
+import SettingList from '../components/profileScreen/SettingList';
 
 const ProfileScreen = () => {
   return (
     <SafeAreaView>
-      <Text>프로필과 세팅</Text>
+      <ProfileCard />
+      <SettingList />
     </SafeAreaView>
   );
 };
