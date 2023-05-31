@@ -1,0 +1,13 @@
+---
+name: "\U0001F41EBug"
+about: Bug 발생 시 작성해주세요.
+title: ''
+labels: ''
+assignees: ''
+
+---
+
+## Description
+설명을 작성하세요.
+
+## ETC
