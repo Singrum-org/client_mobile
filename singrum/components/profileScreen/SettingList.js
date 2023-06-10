@@ -43,6 +43,7 @@ const SettingList = () => {
               activeText={''}
               inActiveText={''}
               changeValueImmediately={true}
+              backgroundActive={'#03c04a'}
               switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
               switchRightPx={2} // denomina
               renderInsideCircle={() => {
@@ -67,6 +68,7 @@ const SettingList = () => {
               activeText={''}
               inActiveText={''}
               changeValueImmediately={true}
+              backgroundActive={'#03c04a'}
               switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
               switchRightPx={2} // denomina
             />

@@ -1,18 +1,18 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Pressable, StyleSheet, Text, View} from 'react-native';
 
 const SettingItem = ({icon, name, subItem}) => {
   return (
-    <View style={styles.container}>
-      {/* TODO - 아이콘 넣기 vector icon 작업 */}
-      <View style={styles.iconWithName}>
-        {icon && <View style={styles.icon}>{icon}</View>}
-        <Text style={styles.name}>{name}</Text>
-      </View>
-      <View>
-        {/* TODO - sub item이 있으면 children 형태로 넣어주기 */}
-        {subItem && <View style={styles.subWrapper}>{subItem}</View>}
-      </View>
+    <View>
+      <Pressable style={styles.container}>
+        <View style={styles.iconWithName}>
+          {icon && <View style={styles.icon}>{icon}</View>}
+          <Text style={styles.name}>{name}</Text>
+        </View>
+        <View>
+          {subItem && <View style={styles.subWrapper}>{subItem}</View>}
+        </View>
+      </Pressable>
     </View>
   );
 };
