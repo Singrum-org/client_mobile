@@ -21,7 +21,7 @@ const MainTab = () => {
         options={{headerShown: false}}
         component={PlantsListStack}
       />
-      <Tab.Screen name="HomeScreen" component={HomeScreen} />
+      <Tab.Screen name="HomeScreen" component={HomeScreen} index />
       <Tab.Screen name="CommunityScreen" component={CommunityScreen} />
     </Tab.Navigator>
   );
