@@ -1,16 +1,23 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Text, Button} from 'react-native';
 import CardListItem from '../components/PlantsListScreen/CardListItem';
 import CardList from '../components/PlantsListScreen/CardList';
+import {useNavigation} from '@react-navigation/native';
+
 
 const PlantsListScreen = () => {
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text>식물 리스트</Text>
       <View style={styles.cardListContainer}>
         <CardList />
       </View>
+      <Button
+        title="디테일 버튼"
+        onPress={() => navigation.push('PlantsDetailScreen', {detail: true})}
+      />
     </SafeAreaView>
   );
 };
