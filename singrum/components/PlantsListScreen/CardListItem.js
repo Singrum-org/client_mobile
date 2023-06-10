@@ -31,7 +31,7 @@ function CardListItem({item}) {
           />
         </View>
         <View style={styles.detailContainer}>
-          <Text style={styles.cardTitle}>{item.name}</Text>
+          <Text style={styles.cardTitle} numberOfLines={1} ellipsizeMode="tail">{item.name}</Text>
           <View style={styles.separator} />
           <View style={styles.cardFooter}>
             <Text style={styles.cardDate}>{item.date}</Text>
@@ -78,13 +78,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   cardFooter: {
+    
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   cardTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 8,
   },
   cardDate: {
     fontSize: 12,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
   separator: {
     height: 1,
     backgroundColor: '#ccc',
-    marginTop: 20,
+    marginTop: 10,
     marginBottom: 10,
   },
 });

@@ -19,8 +19,8 @@ const data = [
   },
   {
     id: 3,
-    name: '튤립',
-    content: '튤립 내용',
+    name: '소나무야소나무야소나무야',
+    content: '소나무 내용',
     date: '2015-05-05',
     likes: 6,
   },
@@ -61,16 +61,6 @@ function CardList() {
     setCards(sortedData);
   };
 
-  const renderCardListItem = ({ item, index }) => {
-    const marginTop = index % 2 === 0 ? 0 : 50;
-
-    return (
-      <View style={[styles.cardContainer, { marginTop }]}>
-        <CardListItem item={item} />
-      </View>
-    );
-  };
-
   const getButtonStyle = (sortType) => {
     return sorting === sortType ? styles.selectedButton : styles.button;
   };
@@ -100,7 +90,7 @@ function CardList() {
       </View>
       <FlatList
         data={cards}
-        renderItem={renderCardListItem}
+        renderItem={({ item }) =>  <CardListItem item={item} />}
         keyExtractor={(item) => item.id.toString()}
         numColumns={2}
         columnWrapperStyle={styles.columnWrapper}
@@ -120,10 +110,11 @@ const styles = StyleSheet.create({
     color: 'rgb(25,25,25)',
     fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 40,
+    marginBottom: 20,
   },
   columnWrapper: {
     justifyContent: 'space-between',
+    marginBottom: 15,
   },
   cardContainer: {
     flex: 1,
