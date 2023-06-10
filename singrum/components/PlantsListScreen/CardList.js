@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import CardListItem from './CardListItem';
 
 const data = [
@@ -41,7 +41,7 @@ function CardList() {
     sortData(sorting);
   }, [sorting]);
 
-  const sortData = (sortType) => {
+  const sortData = sortType => {
     const sortedData = [...cards];
 
     switch (sortType) {
@@ -61,7 +61,7 @@ function CardList() {
     setCards(sortedData);
   };
 
-  const getButtonStyle = (sortType) => {
+  const getButtonStyle = sortType => {
     return sorting === sortType ? styles.selectedButton : styles.button;
   };
 
@@ -71,27 +71,44 @@ function CardList() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={getButtonStyle('newest')}
-          onPress={() => setSorting('newest')}
-        >
-          <Text style={[styles.buttonText, sorting === 'newest' && styles.selectedButtonText]}>최신순</Text>
+          onPress={() => setSorting('newest')}>
+          <Text
+            style={[
+              styles.buttonText,
+              sorting === 'newest' && styles.selectedButtonText,
+            ]}>
+            최신순
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle('likes')}
-          onPress={() => setSorting('likes')}
-        >
-          <Text style={[styles.buttonText, sorting === 'likes' && styles.selectedButtonText]}>좋아요순</Text>
+          onPress={() => setSorting('likes')}>
+          <Text
+            style={[
+              styles.buttonText,
+              sorting === 'likes' && styles.selectedButtonText,
+            ]}>
+            좋아요순
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle('name')}
-          onPress={() => setSorting('name')}
-        >
-          <Text style={[styles.buttonText, sorting === 'name' && styles.selectedButtonText]}>이름순</Text>
+          onPress={() => setSorting('name')}>
+          <Text
+            style={[
+              styles.buttonText,
+              sorting === 'name' && styles.selectedButtonText,
+            ]}>
+            이름순
+          </Text>
         </TouchableOpacity>
       </View>
       <FlatList
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         data={cards}
-        renderItem={({ item }) =>  <CardListItem item={item} />}
-        keyExtractor={(item) => item.id.toString()}
+        renderItem={({item}) => <CardListItem item={item} />}
+        keyExtractor={item => item.id.toString()}
         numColumns={2}
         columnWrapperStyle={styles.columnWrapper}
       />
@@ -132,7 +149,7 @@ const styles = StyleSheet.create({
     color: 'rgb(25,25,25)',
     backgroundColor: 'white',
     borderColor: '#888',
-    borderWidth: 1,   
+    borderWidth: 1,
   },
   selectedButton: {
     marginRight: 10,
@@ -141,7 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'rgba(158,211,106,0.1)',
     borderColor: 'rgb(121,170,65)',
-    borderWidth: 1,   
+    borderWidth: 1,
   },
   buttonText: {
     color: 'rgb(25,25,25)',

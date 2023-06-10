@@ -1,72 +1,25 @@
 import React from 'react';
-import Swiper from 'react-native-swiper';
-import {
-  SafeAreaView,
-  Dimensions,
-  StyleSheet,
-  View,
-  Pressable,
-  Text,
-  ScrollView,
-  FlatList,
-} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {SafeAreaView, StyleSheet, ScrollView} from 'react-native';
 
-const width = Dimensions.get('window').width;
+import BannerList from '../components/homeScreen/BannerList';
+import RecommendList from '../components/homeScreen/RecommendList';
 
 const HomeScreen = () => {
-  const navigation = useNavigation();
-
   return (
-    <SafeAreaView style={styles.block}>
-      <ScrollView>
-        <View style={styles.wrapper}>
-          <Swiper showsButtons={false} autoplay loop dotStyle={{top: 0}}>
-            <Pressable
-              style={styles.banner}
-              onPress={() =>
-                navigation.navigate('PlantsDetailScreen', {detail: true})
-              }>
-              <Text>1</Text>
-            </Pressable>
-            <Pressable
-              style={styles.banner}
-              onPress={() => console.log('onPress')}>
-              <Text>2</Text>
-            </Pressable>
-            <Pressable
-              style={styles.banner}
-              onPress={() => console.log('onPress')}>
-              <Text>3</Text>
-            </Pressable>
-          </Swiper>
-        </View>
-        <View style={styles.recommendList}>
-          <Text style={styles.title}>NEW</Text>
-          <FlatList
-            style={styles.list}
-            contentContainerStyle={{flexGrow: 1}}
-            horizontal={true}
-            data={[1, 2, 3]}
-            renderItem={() => <View style={styles.card}></View>}
-          />
-        </View>
-        <View style={styles.recommendList}>
-          <Text style={styles.title}>인기</Text>
-          <FlatList
-            style={styles.list}
-            horizontal={true}
-            data={[1, 2, 3, 4]}
-            renderItem={() => <View style={styles.card}></View>}
-          />
-        </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
+        <BannerList />
+        <RecommendList title="NEW" />
+        <RecommendList title="인기" />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  block: {
+  container: {
     flex: 1,
     paddingVertical: 15,
   },
@@ -91,7 +44,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 5,
     width: '100%',
-    height: 180,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
