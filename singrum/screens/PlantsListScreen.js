@@ -12,10 +12,6 @@ const PlantsListScreen = () => {
       <View style={styles.cardListContainer}>
         <CardList />
       </View>
-      <Button
-        title="디테일 버튼"
-        onPress={() => navigation.push('PlantsDetailScreen', {detail: true})}
-      />
     </SafeAreaView>
   );
 };
