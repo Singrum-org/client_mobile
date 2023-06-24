@@ -25,7 +25,7 @@ function CardListItem({item}) {
         Platform.OS === 'ios' && pressed && {backgroundColor: '#efefef'},
       ]}
       android_ripple={{color: '#ededed'}}
-      onPress={() => navigation.push('PlantsDetailScreen', {detail: item})}>
+      onPress={() => navigation.push('PlantDetailScreen', {detail: item})}>
       <View style={styles.card}>
         <View style={styles.imgContainer}>
           <Image

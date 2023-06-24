@@ -1,15 +1,27 @@
 import React, {useState} from 'react';
 import {Pressable, View, StyleSheet, Image, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const RecommendListItem = ({item}) => {
   const [isHeart, setIsHeart] = useState(false);
+  const navigation = useNavigation();
+
   return (
     <Pressable
       style={({pressed}) => [
         styles.container,
         Platform.OS === 'ios' && pressed && {backgroundColor: '#efefef'},
       ]}
-      android_ripple={{color: '#ededed'}}>
+      android_ripple={{color: '#ededed'}}
+      onPress={() =>
+        navigation.navigate('PlantsListStack', {
+          initial: false,
+          screen: 'PlantDetailScreen',
+          params: {
+            detail: item,
+          },
+        })
+      }>
       <View style={styles.card}>
         <View style={styles.img}>
           <Pressable onPress={() => setIsHeart(!isHeart)}>
