@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {NavigationContainer, DefaultTheme, DarkTheme} from '@react-navigation/native';
 import RootStack from './screens/RootStack';
+import ThemeContext, { ThemeContextProvider } from './contexts/ThemeContext';
 
 const lightTheme = {
   ...DefaultTheme,
@@ -16,12 +17,25 @@ const darkTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
+    text: '#211809',
+    background: '#2d2d2e',
+    main: '#137166',
   },
 };
 
 function App() {
   return (
-    <NavigationContainer theme={true ? lightTheme : darkTheme}>
+    <ThemeContextProvider>
+      <Root />
+    </ThemeContextProvider>
+  );
+}
+
+const Root = () => {
+  const {currentTheme} = useContext(ThemeContext);
+
+  return (
+    <NavigationContainer theme={currentTheme ? lightTheme : darkTheme}>
       <RootStack></RootStack>
     </NavigationContainer>
   );

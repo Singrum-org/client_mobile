@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useContext, useCallback} from 'react';
 import {
   SafeAreaView,
   View,
@@ -10,18 +10,15 @@ import {
 } from 'react-native';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import {Switch} from 'react-native-switch';
+import ThemeContext from '../contexts/ThemeContext';
 
 const Header = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const [currentTheme, setCurrentTheme] = useState('light');
+  const {currentTheme, setCurrentTheme} = useContext(ThemeContext);
 
   const toggleTheme = useCallback(() => {
-    if (currentTheme === 'light') {
-      setCurrentTheme('dark');
-    } else {
-      setCurrentTheme('light');
-    }
+    setCurrentTheme(!currentTheme);
   }, [currentTheme]);
 
   return (
@@ -39,7 +36,7 @@ const Header = () => {
         </View>
         <View style={styles.right}>
           <Switch
-            value={currentTheme === 'light' ? true : false}
+            value={currentTheme}
             onValueChange={toggleTheme}
             circleSize={25}
             barHeight={25}
@@ -48,7 +45,7 @@ const Header = () => {
             activeText={'☀️'}
             inActiveText={'🌙'}
             innerCircleStyle={
-              currentTheme === 'light' ? {marginRight: 10} : {marginLeft: 10}
+              currentTheme ? {marginRight: 10} : {marginLeft: 10}
             }
             changeValueImmediately={true}
             backgroundActive={'#ffffff'}
@@ -81,6 +78,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     // paddingHorizontal: 33,
     // backgroundColor: 'white',
+    // marginBottom: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
