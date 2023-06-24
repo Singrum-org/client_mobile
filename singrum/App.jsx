@@ -6,6 +6,9 @@ const lightTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
+    text: '#211809',
+    background: '#ececec',
+    main: '#137166',
   },
 };
 

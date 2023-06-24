@@ -9,12 +9,14 @@ import {
   useWindowDimensions,
   Dimensions,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 
 function CardListItem({item}) {
   const {width} = useWindowDimensions();
   const imgWidth = width / 2 - 50;
+  const navigation = useNavigation();
 
   return (
     <Pressable
@@ -22,7 +24,8 @@ function CardListItem({item}) {
         styles.container,
         Platform.OS === 'ios' && pressed && {backgroundColor: '#efefef'},
       ]}
-      android_ripple={{color: '#ededed'}}>
+      android_ripple={{color: '#ededed'}}
+      onPress={() => navigation.push('PlantsDetailScreen', {detail: item})}>
       <View style={styles.card}>
         <View style={styles.imgContainer}>
           <Image
@@ -31,7 +34,9 @@ function CardListItem({item}) {
           />
         </View>
         <View style={styles.detailContainer}>
-          <Text style={styles.cardTitle} numberOfLines={1} ellipsizeMode="tail">{item.name}</Text>
+          <Text style={styles.cardTitle} numberOfLines={1} ellipsizeMode="tail">
+            {item.name}
+          </Text>
           <View style={styles.separator} />
           <View style={styles.cardFooter}>
             <Text style={styles.cardDate}>{item.date}</Text>
@@ -78,7 +83,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   cardFooter: {
-    
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
