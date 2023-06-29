@@ -1,6 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  TextInput,
+} from 'react-native';
 import CardListItem from './CardListItem';
+import {useNavigation} from '@react-navigation/native';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 
 const data = [
   {
@@ -36,6 +45,7 @@ const data = [
 function CardList() {
   const [cards, setCards] = useState(data);
   const [sorting, setSorting] = useState('newest');
+  const navigation = useNavigation();
 
   useEffect(() => {
     sortData(sorting);
@@ -65,9 +75,20 @@ function CardList() {
     return sorting === sortType ? styles.selectedButton : styles.button;
   };
 
+  const navigateToSearchScreen = () => {
+    navigation.navigate('SearchScreen');
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🪴 Singrum's Archive</Text>
+      <View style={styles.searchContainer}>
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={navigateToSearchScreen}>
+          <Text style={styles.searchText}>식물을 검색해 보세요.</Text>
+          <FeatherIcon name="search" size={20} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={getButtonStyle('newest')}
@@ -123,12 +144,6 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 10,
   },
-  title: {
-    color: 'rgb(25,25,25)',
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   columnWrapper: {
     justifyContent: 'space-between',
     marginBottom: 15,
@@ -143,8 +158,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginRight: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
     borderRadius: 5,
     color: 'rgb(25,25,25)',
     backgroundColor: 'white',
@@ -153,8 +168,8 @@ const styles = StyleSheet.create({
   },
   selectedButton: {
     marginRight: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
     borderRadius: 5,
     backgroundColor: 'rgba(158,211,106,0.1)',
     borderColor: 'rgb(121,170,65)',
@@ -169,5 +184,19 @@ const styles = StyleSheet.create({
     color: 'rgb(121,170,65)',
     fontSize: 13,
     fontWeight: 'bold',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginBottom: 10,
+  },
+  searchButton: {
+    backgroundColor: '#fff',
+    width: 200,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
