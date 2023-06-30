@@ -13,8 +13,8 @@ const HomeScreen = () => {
         showsHorizontalScrollIndicator={false}>
         <BannerList />
         <View style={styles.context}>
-          <RecommendList title="NEW" />
-          <RecommendList title="인기" />
+          <RecommendList title="NEW" sort="newest" />
+          <RecommendList title="인기" sort="likes" />
         </View>
       </ScrollView>
     </SafeAreaView>

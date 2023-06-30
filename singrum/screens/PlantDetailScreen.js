@@ -1,11 +1,58 @@
-import React from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {ScrollView, Text, View, StyleSheet} from 'react-native';
+import {
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  Image,
+  Pressable,
+} from 'react-native';
 import {useRoute} from '@react-navigation/native';
 
 const PlantDetailScreen = () => {
   const route = useRoute();
-  const data = route?.params?.detail;
+  const [detail, setDetail] = useState();
+  const [isHeart, setIsHeart] = useState(false);
+  const [likes, setLikes] = useState(0);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:8080/api/plants/${route?.params?.detail}`,
+        );
+        console.log('res', res);
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const result = await res.json();
+        if (result) {
+          const data = result.data;
+          for (let key in data) {
+            data[key] = data[key] === '' ? '-' : data[key];
+          }
+          setDetail(data);
+        }
+      } catch (error) {
+        console.error('Error', error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const formatDate = date => {
+    const newDate = new Date(date);
+    const formattedDate = newDate.toLocaleDateString('ko-KR');
+    return formattedDate;
+  };
+
+  const handlePressHeart = useCallback(() => {
+    setIsHeart(!isHeart);
+    setLikes(prevLikes =>
+      prevLikes === detail?.likes ? prevLikes + 1 : prevLikes - 1,
+    );
+  }, [isHeart]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -13,44 +60,53 @@ const PlantDetailScreen = () => {
         contentContainerStyle={{paddingBottom: 88}}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        <View style={styles.img}></View>
+        <View style={styles.imgBox}>
+          {detail?.imageUrl && (
+            <Image style={styles.img} source={{uri: detail?.imageUrl}} />
+          )}
+          <Pressable onPress={handlePressHeart}>
+            <View style={styles.heartBox}>
+              <Image
+                style={styles.heart}
+                source={
+                  isHeart
+                    ? require('../assets/full-heart.png')
+                    : require('../assets/heart.png')
+                }
+              />
+              <Text style={styles.cardLikes}>{likes}</Text>
+            </View>
+          </Pressable>
+        </View>
         <View style={styles.context}>
           <View style={styles.titleWrap}>
-            <Text style={styles.name}>{data.name}</Text>
-            <Text style={styles.date}>{data.date}</Text>
+            <Text style={styles.name}>{detail?.name}</Text>
+            <Text style={styles.date}>{formatDate(detail?.createdAt)}</Text>
           </View>
           <View style={styles.infoWrap}>
             <Text style={styles.title}>원산지</Text>
-            <Text style={styles.data}>
-              멕시코남부, 파나마, 중앙 아메리카(과테말라)
-            </Text>
+            <Text style={styles.data}>{detail?.origin}</Text>
           </View>
           <View style={styles.infoWrap}>
             <Text style={styles.title}>생장높이(cm)</Text>
-            <Text style={styles.data}>150</Text>
+            <Text style={styles.data}>{detail?.height}</Text>
           </View>
           <View style={styles.infoWrap}>
             <Text style={styles.title}>생장넓이(cm)</Text>
-            <Text style={styles.data}>100</Text>
+            <Text style={styles.data}>{detail?.area}</Text>
           </View>
           <View style={styles.infoWrap}>
             <Text style={styles.title}>번식시기</Text>
-            <Text style={styles.data}>여름</Text>
+            <Text style={styles.data}>{detail?.breeding_season}</Text>
           </View>
           <View style={styles.infoWrap}>
             <Text style={styles.title}>잎형태</Text>
-            <View>
-              <Text style={styles.data}>심장형 둥근모양</Text>
-              <Text style={styles.data}>깃털처럼 갈라지고 군데군데 구멍</Text>
-              <Text style={styles.data}>광택</Text>
-            </View>
+            <Text style={styles.data}>{detail?.leaf}</Text>
           </View>
           <View style={[styles.infoWrap, {flexDirection: 'column'}]}>
             <Text style={styles.title}>정보</Text>
             <Text style={[styles.data, {marginHorizontal: 0}]}>
-              몬스테라는 덩굴성 대형관엽식물로 6~8m 까지 자란다. 잎은 어긋나고
-              성숙한 것은 지름 1m 정도이다. 잎은 진녹색으로 크고 광택이 나며
-              잎맥 사이에 군데군데 타원형의 구멍이 …
+              {detail?.functionality_info}
             </Text>
           </View>
         </View>
@@ -68,10 +124,38 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
     // marginHorizontal: 33,
   },
-  img: {
+  imgBox: {
     width: '100%',
     height: 200,
     backgroundColor: 'gray',
+  },
+  img: {
+    width: '100%',
+    height: '100%',
+  },
+  heartBox: {
+    position: 'absolute',
+    bottom: 15,
+    right: 15,
+    width: 42,
+    height: 60,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    paddingTop: 8,
+    paddingRight: 9.3,
+    paddingBottom: 4,
+    paddingLeft: 9.3,
+  },
+  cardLikes: {
+    fontSize: 12,
+    color: '#444b54',
+  },
+  heart: {
+    width: '100%',
+    height: 20,
+    marginBottom: 6,
   },
   titleWrap: {
     width: '100%',

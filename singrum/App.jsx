@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import {NavigationContainer, DefaultTheme, DarkTheme} from '@react-navigation/native';
 import RootStack from './screens/RootStack';
 import ThemeContext, { ThemeContextProvider } from './contexts/ThemeContext';
+import {PlantsContextProvider} from './contexts/PlantsContext';
+import {SearchContextProvider} from './contexts/SearchContext';
 
 const lightTheme = {
   ...DefaultTheme,
@@ -17,7 +19,7 @@ const darkTheme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    text: '#211809',
+    text: '#ffffff',
     background: '#2d2d2e',
     main: '#137166',
   },
@@ -36,7 +38,11 @@ const Root = () => {
 
   return (
     <NavigationContainer theme={currentTheme ? lightTheme : darkTheme}>
-      <RootStack></RootStack>
+      <PlantsContextProvider>
+        <SearchContextProvider>
+          <RootStack></RootStack>
+        </SearchContextProvider>
+      </PlantsContextProvider>
     </NavigationContainer>
   );
 }

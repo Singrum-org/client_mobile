@@ -18,12 +18,18 @@ const RecommendListItem = ({item}) => {
           initial: false,
           screen: 'PlantDetailScreen',
           params: {
-            detail: item,
+            detail: item.id,
           },
         })
       }>
       <View style={styles.card}>
-        <View style={styles.img}>
+        <View style={styles.imgBox}>
+          {(item?.imageUrl || item?.thumbImageUrl) && (
+            <Image
+              style={styles.img}
+              source={{uri: item?.imageUrl || item?.thumbImageUrl}}
+            />
+          )}
           <Pressable onPress={() => setIsHeart(!isHeart)}>
             <Image
               style={styles.heart}
@@ -36,8 +42,10 @@ const RecommendListItem = ({item}) => {
           </Pressable>
         </View>
         <View style={styles.context}>
-          <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.info}>{item.date}</Text>
+          <Text style={styles.name}>{item?.name}</Text>
+          <Text style={styles.info} numberOfLines={1} ellipsizeMode="tail">
+            {item?.functionality_info}
+          </Text>
         </View>
       </View>
     </Pressable>
@@ -54,10 +62,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
   },
-  img: {
+  imgBox: {
     width: '100%',
     height: 148,
     backgroundColor: '#f5f5f5',
+  },
+  img: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    // backgroundColor: '#f5f5f5',
   },
   heart: {
     position: 'absolute',
