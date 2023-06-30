@@ -47,10 +47,6 @@ function CardList() {
   const [sorting, setSorting] = useState('newest');
   const navigation = useNavigation();
 
-  useEffect(() => {
-    sortData(sorting);
-  }, [sorting]);
-
   const sortData = sortType => {
     const sortedData = [...cards];
 
@@ -71,6 +67,10 @@ function CardList() {
     setCards(sortedData);
   };
 
+  const handleSort = (sortType) => {
+    setSorting(sortType)
+    sortData(sortType)
+  }
   const getButtonStyle = sortType => {
     return sorting === sortType ? styles.selectedButton : styles.button;
   };
@@ -93,7 +93,7 @@ function CardList() {
         <FeatherIcon name="menu" size={20} color="#b7b4b4" />
         <TouchableOpacity
           style={getButtonStyle('newest')}
-          onPress={() => setSorting('newest')}>
+          onPress={() => handleSort('newest')}>
           <Text
             style={[
               styles.buttonText,
@@ -104,7 +104,7 @@ function CardList() {
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle('likes')}
-          onPress={() => setSorting('likes')}>
+          onPress={() => handleSort('likes')}>
           <Text
             style={[
               styles.buttonText,
@@ -115,7 +115,7 @@ function CardList() {
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle('name')}
-          onPress={() => setSorting('name')}>
+          onPress={() => handleSort('name')}>
           <Text
             style={[
               styles.buttonText,
