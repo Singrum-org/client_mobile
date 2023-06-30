@@ -36,6 +36,7 @@ function History({keyword}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>최근 검색어</Text>
+      { !recentSearches.length && <Text>최근 검색어가 없습니다.</Text>}
       <View>
       {recentSearches.map((search, index) => (
         <View style={styles.searchItemContainer} key={index} >
