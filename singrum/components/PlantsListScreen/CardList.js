@@ -11,48 +11,35 @@ import CardListItem from './CardListItem';
 import {useNavigation} from '@react-navigation/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-const data = [
-  {
-    id: 1,
-    name: '해바라기',
-    content: '해바라기 내용',
-    date: '2023-05-06',
-    likes: 10,
-  },
-  {
-    id: 2,
-    name: '장미',
-    content: '장미 내용',
-    date: '2022-08-06',
-    likes: 8,
-  },
-  {
-    id: 3,
-    name: '소나무야소나무야소나무야',
-    content: '소나무 내용',
-    date: '2015-05-05',
-    likes: 6,
-  },
-  {
-    id: 4,
-    name: '국화',
-    content: '국화 내용',
-    date: '2020-01-06',
-    likes: 12,
-  },
-];
-
 function CardList() {
-  const [cards, setCards] = useState(data);
+  const [cards, setCards] = useState([]);
   const [sorting, setSorting] = useState('newest');
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('http://10.0.2.2:8080/api/plants');
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const result = await res.json();
+        if (result) {
+          setCards(result.data);
+        }
+      } catch (error) {
+        console.error('Error', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const sortData = sortType => {
     const sortedData = [...cards];
 
     switch (sortType) {
       case 'newest':
-        sortedData.sort((a, b) => new Date(b.date) - new Date(a.date));
+        sortedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case 'likes':
         sortedData.sort((a, b) => b.likes - a.likes);
@@ -67,10 +54,10 @@ function CardList() {
     setCards(sortedData);
   };
 
-  const handleSort = (sortType) => {
-    setSorting(sortType)
-    sortData(sortType)
-  }
+  const handleSort = sortType => {
+    setSorting(sortType);
+    sortData(sortType);
+  };
   const getButtonStyle = sortType => {
     return sorting === sortType ? styles.selectedButton : styles.button;
   };

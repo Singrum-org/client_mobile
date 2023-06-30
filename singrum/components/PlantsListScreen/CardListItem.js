@@ -7,7 +7,15 @@ function CardListItem({item}) {
 
   const handlePressHeart = () => {
     setIsHeart(!isHeart);
-    setLikes((prevLikes) => (prevLikes === item.likes ? prevLikes + 1 : prevLikes - 1));
+    setLikes(prevLikes =>
+      prevLikes === item.likes ? prevLikes + 1 : prevLikes - 1,
+    );
+  };
+
+  const formatDate = date => {
+    const newDate = new Date(date);
+    const formattedDate = newDate.toLocaleDateString('ko-KR');
+    return formattedDate;
   };
 
   return (
@@ -19,10 +27,9 @@ function CardListItem({item}) {
       android_ripple={{color: '#ededed'}}>
       <View style={styles.card}>
         <View style={styles.imgContainer}>
-          <Image
-            style={styles.img}
-            source={require('../../assets/plant_sample.jpg')}
-          />
+          {item.imageUrl && (
+            <Image style={styles.img} source={{uri: item.imageUrl}} />
+          )}
         </View>
         <View style={styles.detailContainer}>
           <View style={styles.cardLeft}>
@@ -32,7 +39,7 @@ function CardListItem({item}) {
               ellipsizeMode="tail">
               {item.name}
             </Text>
-            <Text style={styles.cardDate}>{item.date}</Text>
+            <Text style={styles.cardDate}>{formatDate(item.createdAt)}</Text>
           </View>
           <Pressable onPress={handlePressHeart}>
             <View style={styles.cardRight}>
@@ -72,7 +79,6 @@ const styles = StyleSheet.create({
     height: 96,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    resizeMode: 'contain',
   },
   card: {
     backgroundColor: '#fff',
