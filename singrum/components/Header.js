@@ -1,24 +1,18 @@
 import React, {useContext, useCallback} from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  Button,
-  Image,
-  Pressable,
-} from 'react-native';
+import {SafeAreaView, View, StyleSheet, Image, Pressable} from 'react-native';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import {Switch} from 'react-native-switch';
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+
 import ThemeContext from '../contexts/ThemeContext';
 
 const Header = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const {currentTheme, setCurrentTheme} = useContext(ThemeContext);
+  const {currentTheme, changeCurrentTheme} = useContext(ThemeContext);
 
   const toggleTheme = useCallback(() => {
-    setCurrentTheme(!currentTheme);
+    changeCurrentTheme(!currentTheme);
   }, [currentTheme]);
 
   return (
@@ -26,13 +20,22 @@ const Header = () => {
       <View style={styles.block}>
         <View style={styles.left}>
           {route?.params?.detail && (
-            <Button title="<" onPress={() => navigation.pop()} />
+            <Pressable style={styles.before} onPress={() => navigation.pop()}>
+              <AntDesignIcon name="arrowleft" size={20} />
+            </Pressable>
           )}
-          <Image
-            style={styles.title}
-            source={require('../assets/singrum.png')}
-            resizeMode="cover"
-          />
+          {!route?.params?.detail && (
+            <>
+              <Image
+                style={styles.logo}
+                source={require('../assets/logo.png')}
+              />
+              <Image
+                style={styles.title}
+                source={require('../assets/singrum.png')}
+              />
+            </>
+          )}
         </View>
         <View style={styles.right}>
           <Switch
@@ -96,6 +99,18 @@ const styles = StyleSheet.create({
   title: {
     width: 80,
     height: 23,
+    resizeMode: 'cover',
+  },
+  before: {
+    marginLeft: -10,
+    marginRight: 11,
+  },
+  logo: {
+    width: 28,
+    height: 28,
+    marginRight: 11,
+    // backgroundColor: 'red',
+    resizeMode: 'contain',
   },
   profile: {
     width: 40,
