@@ -1,4 +1,4 @@
-const {View, Text, StyleSheet} = require('react-native');
+import {View, Text, StyleSheet} from 'react-native';
 
 const messages = {
   NOT_FOUND: '검색 결과가 없습니다.',
@@ -15,7 +15,7 @@ function EmptySearchResult({type}) {
 const styles = StyleSheet.create({
   block: {
     flex: 1,
-    alignContent: 'center',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   text: {

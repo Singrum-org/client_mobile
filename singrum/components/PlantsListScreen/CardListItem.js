@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Image, Platform, Pressable, StyleSheet, Text, View} from 'react-native';
 
 function CardListItem({item}) {
+  const [isLoading, setIsLoading] = useState(true);
   const [isHeart, setIsHeart] = useState(false);
   const [likes, setLikes] = useState(item.likes);
 
@@ -75,10 +76,11 @@ const styles = StyleSheet.create({
   },
   img: {
     width: 160,
-    backgroundColor: 'red',
+    backgroundColor: '#fff',
     height: 96,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    resizeMode:"stretch"
   },
   card: {
     backgroundColor: '#fff',
