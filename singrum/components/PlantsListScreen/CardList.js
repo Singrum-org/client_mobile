@@ -5,16 +5,13 @@ import {
   View,
   TouchableOpacity,
   Text,
-  TextInput,
 } from 'react-native';
 import CardListItem from './CardListItem';
-import {useNavigation} from '@react-navigation/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 function CardList() {
   const [cards, setCards] = useState([]);
   const [sorting, setSorting] = useState('newest');
-  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,7 +36,9 @@ function CardList() {
 
     switch (sortType) {
       case 'newest':
-        sortedData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        sortedData.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        );
         break;
       case 'likes':
         sortedData.sort((a, b) => b.likes - a.likes);
@@ -62,20 +61,8 @@ function CardList() {
     return sorting === sortType ? styles.selectedButton : styles.button;
   };
 
-  const navigateToSearchScreen = () => {
-    navigation.navigate('SearchScreen');
-  };
-
   return (
     <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={navigateToSearchScreen}>
-          <Text style={styles.searchText}>검색어를 입력해주세요.</Text>
-          <FeatherIcon name="search" size={20} />
-        </TouchableOpacity>
-      </View>
       <View style={styles.buttonContainer}>
         <FeatherIcon name="menu" size={20} color="#b7b4b4" />
         <TouchableOpacity
@@ -178,24 +165,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 12,
     fontWeight: 'bold',
-  },
-  searchContainer: {
-    width: 326,
-    height: 40,
-    marginTop: 12,
-    marginBottom: 10,
-    paddingHorizontal: 13,
-  },
-  searchText: {
-    fontSize: 16,
-    color: '#c7cace',
-  },
-  searchButton: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#4a4e52',
   },
 });
