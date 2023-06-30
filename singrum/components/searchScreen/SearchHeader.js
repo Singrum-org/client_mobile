@@ -41,7 +41,6 @@ function SearchHeader() {
   const handleTextSubmit = () => {
     if (keyword.trim() !== '') {
       saveRecentSearches(keyword);
-      onChangeText('');
     }
   };
   
