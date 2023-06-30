@@ -21,6 +21,7 @@ export default PlantsListScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: 29,
   },
   cardListContainer: {
     flex: 1,

@@ -85,11 +85,12 @@ function CardList() {
         <TouchableOpacity
           style={styles.searchButton}
           onPress={navigateToSearchScreen}>
-          <Text style={styles.searchText}>식물을 검색해 보세요.</Text>
+          <Text style={styles.searchText}>검색어를 입력해주세요.</Text>
           <FeatherIcon name="search" size={20} />
         </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
+        <FeatherIcon name="menu" size={20} color="#b7b4b4" />
         <TouchableOpacity
           style={getButtonStyle('newest')}
           onPress={() => setSorting('newest')}>
@@ -142,61 +143,72 @@ export default CardList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    alignItems: 'center',
   },
   columnWrapper: {
     justifyContent: 'space-between',
-    marginBottom: 15,
-  },
-  cardContainer: {
-    flex: 1,
-    marginBottom: 0,
   },
   buttonContainer: {
     flexDirection: 'row',
-    marginBottom: 10,
+    width: 326,
+    height: 40,
+    marginTop: 8,
+    marginBottom: 32,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 20,
   },
   button: {
-    marginRight: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    color: 'rgb(25,25,25)',
-    backgroundColor: 'white',
+    width: 80,
+    height: 24,
+    marginVertical: 0,
+    marginHorizontal: 5,
+    paddingHorizontal: 12,
+    borderRadius: 4,
+    backgroundColor: '#f5f5f5',
     borderColor: '#888',
-    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   selectedButton: {
-    marginRight: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: 'rgba(158,211,106,0.1)',
-    borderColor: 'rgb(121,170,65)',
-    borderWidth: 1,
+    width: 80,
+    height: 24,
+    marginVertical: 0,
+    marginHorizontal: 5,
+    paddingHorizontal: 12,
+    borderRadius: 4,
+    backgroundColor: '#0a5ca2',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
-    color: 'rgb(25,25,25)',
-    fontSize: 13,
-    fontWeight: 'bold',
+    color: '#585e66',
+    fontSize: 12,
+    fontWeight: 300,
   },
   selectedButtonText: {
-    color: 'rgb(121,170,65)',
-    fontSize: 13,
+    color: '#fff',
+    fontSize: 12,
     fontWeight: 'bold',
   },
   searchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    width: 326,
+    height: 40,
+    marginTop: 12,
     marginBottom: 10,
+    paddingHorizontal: 13,
+  },
+  searchText: {
+    fontSize: 16,
+    color: '#c7cace',
   },
   searchButton: {
-    backgroundColor: '#fff',
-    width: 200,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 10,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#4a4e52',
   },
 });
