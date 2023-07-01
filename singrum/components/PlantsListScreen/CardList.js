@@ -5,58 +5,40 @@ import {
   View,
   TouchableOpacity,
   Text,
-  TextInput,
 } from 'react-native';
 import CardListItem from './CardListItem';
-import {useNavigation} from '@react-navigation/native';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-const data = [
-  {
-    id: 1,
-    name: '해바라기',
-    content: '해바라기 내용',
-    date: '2023-05-06',
-    likes: 10,
-  },
-  {
-    id: 2,
-    name: '장미',
-    content: '장미 내용',
-    date: '2022-08-06',
-    likes: 8,
-  },
-  {
-    id: 3,
-    name: '소나무야소나무야소나무야',
-    content: '소나무 내용',
-    date: '2015-05-05',
-    likes: 6,
-  },
-  {
-    id: 4,
-    name: '국화',
-    content: '국화 내용',
-    date: '2020-01-06',
-    likes: 12,
-  },
-];
-
 function CardList() {
-  const [cards, setCards] = useState(data);
+  const [cards, setCards] = useState([]);
   const [sorting, setSorting] = useState('newest');
-  const navigation = useNavigation();
 
   useEffect(() => {
-    sortData(sorting);
-  }, [sorting]);
+    const fetchData = async () => {
+      try {
+        const res = await fetch('http://10.0.2.2:8080/api/plants');
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const result = await res.json();
+        if (result) {
+          setCards(result.data);
+        }
+      } catch (error) {
+        console.error('Error', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const sortData = sortType => {
     const sortedData = [...cards];
 
     switch (sortType) {
       case 'newest':
-        sortedData.sort((a, b) => new Date(b.date) - new Date(a.date));
+        sortedData.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        );
         break;
       case 'likes':
         sortedData.sort((a, b) => b.likes - a.likes);
@@ -71,28 +53,21 @@ function CardList() {
     setCards(sortedData);
   };
 
+  const handleSort = sortType => {
+    setSorting(sortType);
+    sortData(sortType);
+  };
   const getButtonStyle = sortType => {
     return sorting === sortType ? styles.selectedButton : styles.button;
   };
 
-  const navigateToSearchScreen = () => {
-    navigation.navigate('SearchScreen');
-  };
-
   return (
     <View style={styles.container}>
-      <View style={styles.searchContainer}>
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={navigateToSearchScreen}>
-          <Text style={styles.searchText}>식물을 검색해 보세요.</Text>
-          <FeatherIcon name="search" size={20} />
-        </TouchableOpacity>
-      </View>
       <View style={styles.buttonContainer}>
+        <FeatherIcon name="menu" size={20} color="#b7b4b4" />
         <TouchableOpacity
           style={getButtonStyle('newest')}
-          onPress={() => setSorting('newest')}>
+          onPress={() => handleSort('newest')}>
           <Text
             style={[
               styles.buttonText,
@@ -103,7 +78,7 @@ function CardList() {
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle('likes')}
-          onPress={() => setSorting('likes')}>
+          onPress={() => handleSort('likes')}>
           <Text
             style={[
               styles.buttonText,
@@ -114,7 +89,7 @@ function CardList() {
         </TouchableOpacity>
         <TouchableOpacity
           style={getButtonStyle('name')}
-          onPress={() => setSorting('name')}>
+          onPress={() => handleSort('name')}>
           <Text
             style={[
               styles.buttonText,
@@ -142,61 +117,53 @@ export default CardList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    alignItems: 'center',
   },
   columnWrapper: {
     justifyContent: 'space-between',
-    marginBottom: 15,
-  },
-  cardContainer: {
-    flex: 1,
-    marginBottom: 0,
   },
   buttonContainer: {
     flexDirection: 'row',
-    marginBottom: 10,
+    width: 326,
+    height: 40,
+    marginTop: 8,
+    marginBottom: 32,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 20,
   },
   button: {
-    marginRight: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    color: 'rgb(25,25,25)',
-    backgroundColor: 'white',
+    width: 80,
+    height: 24,
+    marginVertical: 0,
+    marginHorizontal: 5,
+    paddingHorizontal: 12,
+    borderRadius: 4,
+    backgroundColor: '#f5f5f5',
     borderColor: '#888',
-    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   selectedButton: {
-    marginRight: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: 'rgba(158,211,106,0.1)',
-    borderColor: 'rgb(121,170,65)',
-    borderWidth: 1,
+    width: 80,
+    height: 24,
+    marginVertical: 0,
+    marginHorizontal: 5,
+    paddingHorizontal: 12,
+    borderRadius: 4,
+    backgroundColor: '#0a5ca2',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonText: {
-    color: 'rgb(25,25,25)',
-    fontSize: 13,
-    fontWeight: 'bold',
+    color: '#585e66',
+    fontSize: 12,
+    fontWeight: 300,
   },
   selectedButtonText: {
-    color: 'rgb(121,170,65)',
-    fontSize: 13,
+    color: '#fff',
+    fontSize: 12,
     fontWeight: 'bold',
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginBottom: 10,
-  },
-  searchButton: {
-    backgroundColor: '#fff',
-    width: 200,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
 });
