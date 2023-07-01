@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import CustomButton from '../common/CustomButton';
 
 const EditInputList = () => {
   return (
@@ -8,7 +9,7 @@ const EditInputList = () => {
         <Text style={styles.settingTitle}>유저 네임</Text>
         <TextInput placeholder="유저 네임"></TextInput>
       </View>
-      <Button title="회원탈퇴" color={'#03c04a'} />
+      <CustomButton title="회원탈퇴" />
     </View>
   );
 };

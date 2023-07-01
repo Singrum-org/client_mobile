@@ -22,7 +22,7 @@ const ProfileCard = () => {
       </View>
       <View style={styles.editWrapper}>
         <TouchableOpacity
-          style={[styles.editButton, {backgroundColor: '#03c04a'}]}
+          style={[styles.editButton, {backgroundColor: '#46a08f'}]}
           onPress={onOpenEditProfile}>
           <FeatherIcons name="edit" color={'#fff'} size={22} />
         </TouchableOpacity>

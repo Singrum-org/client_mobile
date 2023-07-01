@@ -4,11 +4,18 @@ import SettingItem from './SettingItem';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
 import {Switch} from 'react-native-switch';
+import {useNavigation} from '@react-navigation/native';
 
 const SettingList = () => {
+  const navigation = useNavigation();
+
   const [currentLanguage, setCurrentLanguage] = useState('kr');
   const [currentTheme, setCurrentTheme] = useState('light');
-  const login = true;
+  const login = false;
+
+  const onOpenLoginScreen = useCallback(() => {
+    navigation.push('SignInScreen', {});
+  }, []);
 
   const toggleLanguage = useCallback(() => {
     if (currentLanguage === 'kr') {
@@ -29,7 +36,26 @@ const SettingList = () => {
   let settingComponent;
   if (login) {
     settingComponent = (
-      <>
+      <SettingItem
+        icon={<MaterialIcons name="logout" color={'#787276'} size={22} />}
+        name={'로그아웃'}
+      />
+    );
+  } else {
+    settingComponent = (
+      <SettingItem
+        icon={<MaterialIcons name="logout" color={'#787276'} size={22} />}
+        name={'로그인/회원가입'}
+        onPress={onOpenLoginScreen}
+      />
+    );
+  }
+  return (
+    <View style={styles.container}>
+      <View style={styles.settingTitleWrapper}>
+        <Text style={styles.settingTitle}>설정</Text>
+      </View>
+      <View style={styles.settingWrapper}>
         <SettingItem
           icon={<MaterialIcons name="language" color={'#787276'} size={22} />}
           name={'언어'}
@@ -43,7 +69,7 @@ const SettingList = () => {
               activeText={''}
               inActiveText={''}
               changeValueImmediately={true}
-              backgroundActive={'#03c04a'}
+              backgroundActive={'#46a08f'}
               switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
               switchRightPx={2} // denomina
               renderInsideCircle={() => {
@@ -68,40 +94,15 @@ const SettingList = () => {
               activeText={''}
               inActiveText={''}
               changeValueImmediately={true}
-              backgroundActive={'#03c04a'}
+              backgroundActive={'#46a08f'}
               switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
               switchRightPx={2} // denomina
             />
           }
         />
-        <SettingItem
-          icon={<MaterialIcons name="logout" color={'#787276'} size={22} />}
-          name={'로그아웃'}
-        />
-      </>
-    );
-  } else {
-    <>
-      <SettingItem
-        icon={<MaterialIcons name="language" color={'#787276'} size={22} />}
-        name={'언어'}
-      />
-      <SettingItem
-        icon={<FontAwesomeIcons name="moon-o" color={'#787276'} size={22} />}
-        name={'다크 모드'}
-      />
-      <SettingItem
-        icon={<MaterialIcons name="logout" color={'#787276'} size={22} />}
-        name={'로그인/회원가입'}
-      />
-    </>;
-  }
-  return (
-    <View style={styles.container}>
-      <View style={styles.settingTitleWrapper}>
-        <Text style={styles.settingTitle}>설정</Text>
+
+        {settingComponent}
       </View>
-      <View style={styles.settingWrapper}>{settingComponent}</View>
     </View>
   );
 };
