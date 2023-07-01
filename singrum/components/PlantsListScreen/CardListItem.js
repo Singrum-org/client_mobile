@@ -4,7 +4,6 @@ import {useNavigation} from '@react-navigation/native';
 
 function CardListItem({item}) {
   const navigation = useNavigation();
-  const [isLoading, setIsLoading] = useState(true);
   const [isHeart, setIsHeart] = useState(false);
   const [likes, setLikes] = useState(item.likes);
 

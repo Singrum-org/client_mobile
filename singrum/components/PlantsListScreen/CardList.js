@@ -4,80 +4,118 @@ import CardListItem from './CardListItem';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import PlantsContext from '../../contexts/PlantsContext';
 
-function CardList() {
+const CardList = () => {
   const {plants, sortPlants} = useContext(PlantsContext);
+
   const [cards, setCards] = useState([]);
   const [sorting, setSorting] = useState('newest');
 
   useEffect(() => {
-    setCards(plants);
+    const fetchData = async () => {
+      try {
+        const res = await fetch('http://10.0.2.2:8080/api/plants');
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const result = await res.json();
+        if (result) {
+          setCards(result.data);
+        }
+      } catch (error) {
+        console.error('Error', error);
+      }
+    };
+    fetchData();
   }, []);
 
-  const handleSort = useCallback(
-    sortType => {
+  const sortData = sortType => {
+    const sortedData = [...cards];
+
+    switch (sortType) {
+      case 'newest':
+        sortedData.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        );
+        break;
+      case 'likes':
+        sortedData.sort((a, b) => b.likes - a.likes);
+        break;
+      case 'name':
+        sortedData.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      default:
+        break;
+    }
+
+    // const handleSort = useCallback(
+    //   sortType => {
+    //     setSorting(sortType);
+    //     const cards = sortPlants(sortType);
+    //     setCards(cards);
+    //   },
+    //   [sorting],
+    // );
+
+    const handleSort = sortType => {
       setSorting(sortType);
-      const cards = sortPlants(sortType);
-      setCards(cards);
-    },
-    [sorting],
-  );
+      sortData(sortType);
+    };
 
-  const getButtonStyle = sortType => {
-    return sorting === sortType ? styles.selectedButton : styles.button;
-  };
+    const getButtonStyle = sortType => {
+      return sorting === sortType ? styles.selectedButton : styles.button;
+    };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <FeatherIcon name="menu" size={20} color="#b7b4b4" />
-        <TouchableOpacity
-          style={getButtonStyle('newest')}
-          onPress={() => handleSort('newest')}>
-          <Text
-            style={[
-              styles.buttonText,
-              sorting === 'newest' && styles.selectedButtonText,
-            ]}>
-            최신순
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={getButtonStyle('likes')}
-          onPress={() => handleSort('likes')}>
-          <Text
-            style={[
-              styles.buttonText,
-              sorting === 'likes' && styles.selectedButtonText,
-            ]}>
-            좋아요순
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={getButtonStyle('name')}
-          onPress={() => handleSort('name')}>
-          <Text
-            style={[
-              styles.buttonText,
-              sorting === 'name' && styles.selectedButtonText,
-            ]}>
-            이름순
-          </Text>
-        </TouchableOpacity>
+    return (
+      <View style={styles.container}>
+        <View style={styles.buttonContainer}>
+          <FeatherIcon name="menu" size={20} color="#b7b4b4" />
+          <TouchableOpacity
+            style={getButtonStyle('newest')}
+            onPress={() => handleSort('newest')}>
+            <Text
+              style={[
+                styles.buttonText,
+                sorting === 'newest' && styles.selectedButtonText,
+              ]}>
+              최신순
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle('likes')}
+            onPress={() => handleSort('likes')}>
+            <Text
+              style={[
+                styles.buttonText,
+                sorting === 'likes' && styles.selectedButtonText,
+              ]}>
+              좋아요순
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle('name')}
+            onPress={() => handleSort('name')}>
+            <Text
+              style={[
+                styles.buttonText,
+                sorting === 'name' && styles.selectedButtonText,
+              ]}>
+              이름순
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={cards}
+          renderItem={({item}) => <CardListItem item={item} />}
+          keyExtractor={item => item.id.toString()}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapper}
+        />
       </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        data={cards}
-        renderItem={({item}) => <CardListItem item={item} />}
-        keyExtractor={item => item.id.toString()}
-        numColumns={2}
-        columnWrapperStyle={styles.columnWrapper}
-      />
-    </View>
-  );
-}
-
-export default CardList;
+    );
+  };
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -132,3 +170,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default CardList;

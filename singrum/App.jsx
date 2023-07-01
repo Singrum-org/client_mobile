@@ -1,7 +1,11 @@
-import React, { useContext } from 'react';
-import {NavigationContainer, DefaultTheme, DarkTheme} from '@react-navigation/native';
+import React, {useContext} from 'react';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
 import RootStack from './screens/RootStack';
-import ThemeContext, { ThemeContextProvider } from './contexts/ThemeContext';
+import ThemeContext, {ThemeContextProvider} from './contexts/ThemeContext';
 import {PlantsContextProvider} from './contexts/PlantsContext';
 import {SearchContextProvider} from './contexts/SearchContext';
 
@@ -45,6 +49,6 @@ const Root = () => {
       </PlantsContextProvider>
     </NavigationContainer>
   );
-}
+};
 
 export default App;
