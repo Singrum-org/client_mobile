@@ -41,6 +41,7 @@ const SignInScreen = () => {
           resizeMode="cover"
           style={[styles.logo]}
           source={require('../assets/logo_64.png')}></Image>
+        <Image style={styles.title} source={require('../assets/singrum.png')} />
         <View style={styles.form}>
           <BorderedInput
             isBottom
