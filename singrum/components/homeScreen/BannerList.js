@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {StyleSheet, View, Dimensions} from 'react-native';
+import {useTheme} from '@react-navigation/native';
 import Swiper from 'react-native-swiper';
 
-import BackgroundImage from '../../assets/banner.jpeg';
+import BackgroundImage from '../../assets/shine-stephania-plant-in-pink-pot.png';
 
 import BannerItem from './BannerItem';
 
@@ -55,9 +55,16 @@ const data = [
 ];
 
 const BannerList = () => {
+  const theme = useTheme();
+
   return (
     <View style={styles.wrapper}>
-      <Swiper showsButtons={false} autoplay loop dotStyle={{top: 0}}>
+      <Swiper
+        showsButtons={false}
+        autoplay
+        loop
+        activeDotColor={theme.colors.main}
+        paginationStyle={{bottom: 10}}>
         {data.map(item => (
           <BannerItem key={item.id} item={item} />
         ))}
@@ -68,48 +75,9 @@ const BannerList = () => {
 
 const styles = StyleSheet.create({
   wrapper: {
+    position: 'relative',
     width: '100%',
-    height: 170,
-  },
-  banner: {
-    flex: 1,
-    backgroundColor: '#9DD6EB',
-    marginHorizontal: 13,
-    borderWidth: 1,
-    borderRadius: 20,
-    borderColor: 'black',
-  },
-  text: {
-    color: '#fff',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-  recommendList: {
-    marginTop: 15,
-    marginBottom: 5,
-    width: '100%',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-  },
-  title: {
-    marginHorizontal: 15,
-    fontSize: 20,
-  },
-  list: {
-    flexGrow: 0,
-    paddingHorizontal: 10,
-    boxSixing: 'border-box',
-    width: '100%',
-    height: '85%',
-  },
-  card: {
-    marginHorizontal: 5,
-    width: 120,
-    height: '100%',
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 20,
+    height: 120,
   },
 });
 

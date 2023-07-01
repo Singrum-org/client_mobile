@@ -1,10 +1,25 @@
-import React from 'react';
-import {SafeAreaView, View, Text, StyleSheet, Button} from 'react-native';
+import React, {useContext, useCallback} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  Image,
+  Pressable,
+} from 'react-native';
 import {useRoute, useNavigation} from '@react-navigation/native';
+import {Switch} from 'react-native-switch';
+import ThemeContext from '../contexts/ThemeContext';
 
 const Header = () => {
   const route = useRoute();
   const navigation = useNavigation();
+  const {currentTheme, setCurrentTheme} = useContext(ThemeContext);
+
+  const toggleTheme = useCallback(() => {
+    setCurrentTheme(!currentTheme);
+  }, [currentTheme]);
 
   return (
     <SafeAreaView>
@@ -13,12 +28,43 @@ const Header = () => {
           {route?.params?.detail && (
             <Button title="<" onPress={() => navigation.pop()} />
           )}
-          <Text style={styles.title}>Singrum</Text>
+          <Image
+            style={styles.title}
+            source={require('../assets/singrum.png')}
+            resizeMode="cover"
+          />
         </View>
-        <Button
-          title="프로필"
-          onPress={() => navigation.push('ProfileScreen')}
-        />
+        <View style={styles.right}>
+          <Switch
+            value={currentTheme}
+            onValueChange={toggleTheme}
+            circleSize={25}
+            barHeight={25}
+            circleBorderWidth={1}
+            switchWidthMultiplier={2}
+            activeText={'☀️'}
+            inActiveText={'🌙'}
+            innerCircleStyle={
+              currentTheme ? {marginRight: 10} : {marginLeft: 10}
+            }
+            changeValueImmediately={true}
+            backgroundActive={'#ffffff'}
+            backgroundInactive={'#444b54'}
+            circleActiveColor={'#d0d0d0'}
+            circleInActiveColor={'#d0d0d0'}
+            circleBorderActiveColor={'#c1c1c1'}
+            circleBorderInactiveColor={'#c1c1c1'}
+            switchLeftPx={2} // denominator for logic when sliding to TRUE position. Higher number = more space from RIGHT of the circle to END of the slider
+            switchRightPx={2} // denomina
+          />
+          <Pressable onPress={() => navigation.push('ProfileScreen')}>
+            <Image
+              style={styles.profile}
+              source={require('../assets/profile.png')}
+              resizeMode="cover"
+            />
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -26,8 +72,13 @@ const Header = () => {
 
 const styles = StyleSheet.create({
   block: {
-    padding: 13,
-    backgroundColor: 'white',
+    width: '100%',
+    height: 48,
+    paddingVertical: 8,
+    paddingHorizontal: 25,
+    // paddingHorizontal: 33,
+    // backgroundColor: 'white',
+    // marginBottom: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -37,9 +88,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  right: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   title: {
-    fontSize: 24,
-    color: 'black',
+    width: 80,
+    height: 23,
+  },
+  profile: {
+    width: 40,
+    height: 40,
+    marginLeft: 16,
+    // backgroundColor: 'red',
   },
 });
 

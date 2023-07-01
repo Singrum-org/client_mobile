@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {Image, Platform, Pressable, StyleSheet, Text, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 function CardListItem({item}) {
-  const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation();
   const [isHeart, setIsHeart] = useState(false);
   const [likes, setLikes] = useState(item.likes);
 
@@ -25,11 +26,15 @@ function CardListItem({item}) {
         styles.container,
         Platform.OS === 'ios' && pressed && {backgroundColor: '#efefef'},
       ]}
-      android_ripple={{color: '#ededed'}}>
+      android_ripple={{color: '#ededed'}}
+      onPress={() => navigation.push('PlantDetailScreen', {detail: item.id})}>
       <View style={styles.card}>
         <View style={styles.imgContainer}>
-          {item.imageUrl && (
-            <Image style={styles.img} source={{uri: item.imageUrl}} />
+          {(item?.imageUrl || item?.thumbImageUrl) && (
+            <Image
+              style={styles.img}
+              source={{uri: item?.imageUrl || item?.thumbImageUrl}}
+            />
           )}
         </View>
         <View style={styles.detailContainer}>
@@ -80,7 +85,7 @@ const styles = StyleSheet.create({
     height: 96,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    resizeMode:"stretch"
+    resizeMode: 'stretch',
   },
   card: {
     backgroundColor: '#fff',

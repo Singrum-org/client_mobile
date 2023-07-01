@@ -1,15 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import React, {useContext, useCallback, useEffect, useState} from 'react';
+import {FlatList, StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 import CardListItem from './CardListItem';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import PlantsContext from '../../contexts/PlantsContext';
 
-function CardList() {
+const CardList = () => {
+  const {plants, sortPlants} = useContext(PlantsContext);
+
   const [cards, setCards] = useState([]);
   const [sorting, setSorting] = useState('newest');
 
@@ -50,69 +47,75 @@ function CardList() {
         break;
     }
 
-    setCards(sortedData);
-  };
+    // const handleSort = useCallback(
+    //   sortType => {
+    //     setSorting(sortType);
+    //     const cards = sortPlants(sortType);
+    //     setCards(cards);
+    //   },
+    //   [sorting],
+    // );
 
-  const handleSort = sortType => {
-    setSorting(sortType);
-    sortData(sortType);
-  };
-  const getButtonStyle = sortType => {
-    return sorting === sortType ? styles.selectedButton : styles.button;
-  };
+    const handleSort = sortType => {
+      setSorting(sortType);
+      sortData(sortType);
+    };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <FeatherIcon name="menu" size={20} color="#b7b4b4" />
-        <TouchableOpacity
-          style={getButtonStyle('newest')}
-          onPress={() => handleSort('newest')}>
-          <Text
-            style={[
-              styles.buttonText,
-              sorting === 'newest' && styles.selectedButtonText,
-            ]}>
-            최신순
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={getButtonStyle('likes')}
-          onPress={() => handleSort('likes')}>
-          <Text
-            style={[
-              styles.buttonText,
-              sorting === 'likes' && styles.selectedButtonText,
-            ]}>
-            좋아요순
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={getButtonStyle('name')}
-          onPress={() => handleSort('name')}>
-          <Text
-            style={[
-              styles.buttonText,
-              sorting === 'name' && styles.selectedButtonText,
-            ]}>
-            이름순
-          </Text>
-        </TouchableOpacity>
+    const getButtonStyle = sortType => {
+      return sorting === sortType ? styles.selectedButton : styles.button;
+    };
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.buttonContainer}>
+          <FeatherIcon name="menu" size={20} color="#b7b4b4" />
+          <TouchableOpacity
+            style={getButtonStyle('newest')}
+            onPress={() => handleSort('newest')}>
+            <Text
+              style={[
+                styles.buttonText,
+                sorting === 'newest' && styles.selectedButtonText,
+              ]}>
+              최신순
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle('likes')}
+            onPress={() => handleSort('likes')}>
+            <Text
+              style={[
+                styles.buttonText,
+                sorting === 'likes' && styles.selectedButtonText,
+              ]}>
+              좋아요순
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={getButtonStyle('name')}
+            onPress={() => handleSort('name')}>
+            <Text
+              style={[
+                styles.buttonText,
+                sorting === 'name' && styles.selectedButtonText,
+              ]}>
+              이름순
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          data={cards}
+          renderItem={({item}) => <CardListItem item={item} />}
+          keyExtractor={item => item.id.toString()}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapper}
+        />
       </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        data={cards}
-        renderItem={({item}) => <CardListItem item={item} />}
-        keyExtractor={item => item.id.toString()}
-        numColumns={2}
-        columnWrapperStyle={styles.columnWrapper}
-      />
-    </View>
-  );
-}
-
-export default CardList;
+    );
+  };
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -167,3 +170,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
+export default CardList;
