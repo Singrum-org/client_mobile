@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, FlatList, Dimensions} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
-import CardListItem from '../PlantsListScreen/CardListItem';
+import CardListItem from '../plantsListScreen/CardListItem';
 
 const width = Dimensions.get('screen').width;
 

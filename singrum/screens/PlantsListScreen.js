@@ -1,7 +1,7 @@
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {StyleSheet, View, Button} from 'react-native';
-import CardList from '../components/PlantsListScreen/CardList';
+import {StyleSheet, View} from 'react-native';
+import CardList from '../components/plantsListScreen/CardList';
 import {useNavigation} from '@react-navigation/native';
 
 const PlantsListScreen = () => {
