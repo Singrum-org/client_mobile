@@ -1,10 +1,10 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, View} from 'react-native';
 
-const SettingItem = ({icon, name, subItem}) => {
+const SettingItem = ({icon, name, subItem, onPress = () => {}}) => {
   return (
     <View>
-      <Pressable style={styles.container}>
+      <Pressable style={styles.container} onPress={onPress}>
         <View style={styles.iconWithName}>
           {icon && <View style={styles.icon}>{icon}</View>}
           <Text style={styles.name}>{name}</Text>
