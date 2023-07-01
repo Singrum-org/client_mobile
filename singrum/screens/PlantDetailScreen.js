@@ -20,9 +20,9 @@ const PlantDetailScreen = () => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8080/api/plants/${route?.params?.detail}`,
+          `http://10.0.2.2:8080/api/plants/${route?.params?.detail}`,
         );
-        console.log('res', res);
+
         if (!res.ok) {
           throw new Error('Failed to fetch data');
         }

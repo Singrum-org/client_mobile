@@ -8,7 +8,7 @@ export function PlantsContextProvider({children}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:8080/api/plants');
+        const res = await fetch('http://10.0.2.2:8080/api/plants');
         if (!res.ok) {
           throw new Error('Failed to fetch data');
         }
