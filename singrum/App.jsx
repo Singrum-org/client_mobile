@@ -8,6 +8,7 @@ import RootStack from './screens/RootStack';
 import ThemeContext, {ThemeContextProvider} from './contexts/ThemeContext';
 import {PlantsContextProvider} from './contexts/PlantsContext';
 import {SearchContextProvider} from './contexts/SearchContext';
+import {UserContextProvider} from './contexts/userContext';
 
 const lightTheme = {
   ...DefaultTheme,
@@ -32,7 +33,9 @@ const darkTheme = {
 function App() {
   return (
     <ThemeContextProvider>
-      <Root />
+      <UserContextProvider>
+        <Root />
+      </UserContextProvider>
     </ThemeContextProvider>
   );
 }

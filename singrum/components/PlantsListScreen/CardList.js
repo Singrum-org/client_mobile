@@ -19,7 +19,7 @@ const CardList = () => {
           throw new Error('Failed to fetch data');
         }
         const result = await res.json();
-        console.log(result.data.length);
+
         if (result) {
           setCards(result.data);
         }

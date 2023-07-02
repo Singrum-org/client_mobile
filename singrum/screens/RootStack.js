@@ -16,17 +16,45 @@ const RootStack = () => {
         component={MainTab}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-      <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+      <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          title: '프로필',
+        }}
+      />
+      <Stack.Screen
+        name="EditProfileScreen"
+        component={EditProfileScreen}
+        options={{
+          title: '프로필 수정',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}
+      />
       <Stack.Screen
         name="SignInScreen"
         component={SignInScreen}
-        options={{headerShown: false}}
+        options={{
+          title: '로그인',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}
       />
       <Stack.Screen
         name="SignUpScreen"
         component={SignupScreen}
-        options={{headerShown: false}}
+        options={{
+          title: '회원가입',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}
       />
     </Stack.Navigator>
   );
