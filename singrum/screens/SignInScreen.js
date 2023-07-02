@@ -10,9 +10,13 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import BorderedInput from '../components/common/BorderedInput';
 import CustomButton from '../components/common/CustomButton';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useUserContext} from '../contexts/userContext';
 
 const SignInScreen = () => {
   const navigation = useNavigation();
+  const {user, setUser} = useUserContext();
 
   const [form, setForm] = useState({
     email: '',
@@ -25,14 +29,43 @@ const SignInScreen = () => {
     setForm({...form, [name]: value});
   };
 
-  const onSubmitSignIn = () => {
-    Keyboard.dismiss();
-    console.log(form);
+  const onSubmitSignIn = async () => {
+    try {
+      Keyboard.dismiss();
+      if (!form['email'].trim()) return;
+      if (!form['password'].trim()) return;
+
+      const {data: loginData} = await axios.post(
+        `http://10.0.2.2:8080/api/user/signin`,
+        form,
+      );
+      if (loginData.statusCode === 200) {
+        await AsyncStorage.setItem('accessToken', loginData.data.accessToken);
+        const {data} = await axios.post(
+          'http://10.0.2.2:8080/api/user/auth',
+          {},
+          {
+            headers: {Authorization: `Bearer ${loginData.data.accessToken}`},
+          },
+        );
+        setUser(data);
+
+        navigation.popToTop();
+      } else {
+        console.log(loginData);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onOpenSignUpScreen = useCallback(() => {
     navigation.push('SignUpScreen', {});
   }, []);
+
+  if (user) {
+    return navigation.goBack();
+  }
 
   return (
     <KeyboardAvoidingView style={styles.keyboardAvoidingView}>
@@ -41,6 +74,7 @@ const SignInScreen = () => {
           resizeMode="cover"
           style={[styles.logo]}
           source={require('../assets/logo_64.png')}></Image>
+        <Image style={styles.title} source={require('../assets/singrum.png')} />
         <View style={styles.form}>
           <BorderedInput
             isBottom
@@ -51,12 +85,14 @@ const SignInScreen = () => {
             autoCompleteType="email"
             keyboardType="email-address"
             returnKeyType="next"
+            maxLength={20}
             onSubmitEditing={() => passwordRef.current.focus()}
           />
           <BorderedInput
             placeholder={'비밀번호'}
             onChangeText={onChangeTextHandler('password')}
             secureTextEntry
+            maxLength={20}
             ref={passwordRef}
             returnKeyType={'done'}
             onSubmitEditing={() => {

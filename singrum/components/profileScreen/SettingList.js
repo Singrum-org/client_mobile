@@ -5,13 +5,15 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesomeIcons from 'react-native-vector-icons/FontAwesome';
 import {Switch} from 'react-native-switch';
 import {useNavigation} from '@react-navigation/native';
+import {useUserContext} from '../../contexts/userContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SettingList = () => {
   const navigation = useNavigation();
+  const {user, setUser} = useUserContext();
 
   const [currentLanguage, setCurrentLanguage] = useState('kr');
   const [currentTheme, setCurrentTheme] = useState('light');
-  const login = false;
 
   const onOpenLoginScreen = useCallback(() => {
     navigation.push('SignInScreen', {});
@@ -33,12 +35,19 @@ const SettingList = () => {
     }
   }, [currentTheme]);
 
+  const handleLogout = async () => {
+    await AsyncStorage.setItem('accessToken', '');
+    setUser(null);
+    navigation.popToTop();
+  };
+
   let settingComponent;
-  if (login) {
+  if (user) {
     settingComponent = (
       <SettingItem
         icon={<MaterialIcons name="logout" color={'#787276'} size={22} />}
         name={'로그아웃'}
+        onPress={handleLogout}
       />
     );
   } else {

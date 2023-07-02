@@ -2,8 +2,11 @@ import React, {useCallback} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Avatar from '../common/Avatar';
+import {useUserContext} from '../../contexts/userContext';
 
 const EditProfileCard = () => {
+  const {user, setUser} = useUserContext();
+
   return (
     <View style={styles.container}>
       <View style={styles.avatarWrapper}>
@@ -13,8 +16,8 @@ const EditProfileCard = () => {
         </View>
       </View>
       <View style={styles.profileDescriptionWrapper}>
-        <Text style={styles.profileNickname}>Ohjoo</Text>
-        <Text style={styles.profileEmail}>brb1111@naver.com</Text>
+        <Text style={styles.profileNickname}>{user?.nickname}</Text>
+        <Text style={styles.profileEmail}>{user?.email}</Text>
       </View>
     </View>
   );
